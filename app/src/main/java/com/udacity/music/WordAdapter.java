@@ -33,6 +33,7 @@ public class WordAdapter extends ArrayAdapter<Word> {
 
         TextView nameTextView = (TextView) listItemView.findViewById(R.id.music_text_view);
         nameTextView.setText(currentWord.getMusicName());
+        nameTextView.setId(currentWord.getMtextViewID());
 
         ImageView defaultImageView = (ImageView) listItemView.findViewById(R.id.image_view);
 

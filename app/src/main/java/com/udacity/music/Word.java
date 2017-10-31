@@ -1,10 +1,14 @@
 package com.udacity.music;
 
 
+import android.view.View;
+import android.widget.TextView;
+
 public class Word {
 
     private String mMusicName;
     private int mAudioResourceId;
+    private int mtextViewID;
 
     /**
      * Constant value that represents no image was provided for this word
@@ -28,6 +32,18 @@ public class Word {
         mImageResourceId = imageResourceId;
         mAudioResourceId = audioResourceId;
 
+    }
+
+    public Word(String musicName, int imageResourceId, int audioResourceId, int textViewID) {
+        mMusicName = musicName;
+        mImageResourceId = imageResourceId;
+        mAudioResourceId = audioResourceId;
+        mtextViewID = textViewID;
+
+    }
+
+    public int getMtextViewID() {
+        return mtextViewID;
     }
 
     public String getMusicName() {

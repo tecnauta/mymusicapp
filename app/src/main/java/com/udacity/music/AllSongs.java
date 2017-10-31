@@ -1,17 +1,16 @@
 package com.udacity.music;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import com.udacity.music.R;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -71,11 +70,11 @@ public class AllSongs extends AppCompatActivity {
         mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 
         final ArrayList<Word> words = new ArrayList<Word>();
-        words.add(new Word("John Hindemith", R.drawable.ic_play_arrow_white_24dp, R.raw.light_and_darkness));
-        words.add(new Word("Dead Man Swag", R.drawable.ic_play_arrow_white_24dp, R.raw.dead_man_swag));
-        words.add(new Word("I'm So Happy", R.drawable.ic_play_arrow_white_24dp, R.raw.im_so_happy));
-        words.add(new Word("Electric way", R.drawable.ic_play_arrow_white_24dp, R.raw.martin_garrix));
-        words.add(new Word("White Horse", R.drawable.ic_play_arrow_white_24dp, R.raw.white_horse));
+        words.add(new Word("John Hindemith", R.drawable.ic_play_arrow_white_24dp, R.raw.light_and_darkness,1));
+        words.add(new Word("Dead Man Swag", R.drawable.ic_play_arrow_white_24dp, R.raw.dead_man_swag,2));
+        words.add(new Word("I'm So Happy", R.drawable.ic_play_arrow_white_24dp, R.raw.im_so_happy,3));
+        words.add(new Word("Electric way", R.drawable.ic_play_arrow_white_24dp, R.raw.martin_garrix,4));
+        words.add(new Word("White Horse", R.drawable.ic_play_arrow_white_24dp, R.raw.white_horse,5));
 
         WordAdapter itemsAdapter = new WordAdapter(this, words);
         ListView listView = (ListView) findViewById(R.id.word_list);
@@ -84,7 +83,7 @@ public class AllSongs extends AppCompatActivity {
         // Set a click listener to play the audio when the list item is clicked on
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+            public void onItemClick(AdapterView<?> adapterView, View view,final int position, long l) {
                 // Release the media player if                   it currently exists because we are about to
                 // play a different sound file
                 releaseMediaPlayer();
@@ -110,7 +109,18 @@ public class AllSongs extends AppCompatActivity {
 
                     // Setup a listener on the media player, so that we can stop and release the
                     // media player once the sound has finished playing.
-                    mMediaPlayer.setOnCompletionListener(mCompletionListener);
+                    //mMediaPlayer.setOnCompletionListener(mCompletionListener);
+                    mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                        public void onCompletion(MediaPlayer mp) {
+
+                            Word songPosition = words.get(position);
+                            TextView textView = (TextView) findViewById(songPosition.getMtextViewID());
+                            //textView.setTextColor(getResources().getColor(R.color.corTextoAposSom)); // Pode ser assim também
+                            textView.setTextColor(Color.parseColor("#334455"));
+                            String figureOutMusicName = songPosition.getMusicName().toUpperCase();
+                            Toast.makeText(AllSongs.this, "The song " + figureOutMusicName + " is finished", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
             }
         });
